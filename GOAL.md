@@ -2,8 +2,8 @@
 fused_infer_attention_score算子skip(Blocked Attention Sparsity via Softmax Thresholding)功能开发
 
 ## 一、代码分支
-1. 基线分支：8.5.0-base，对应commit为da6cbf83502727d4fdcb086eef8ce8d514dc6a63
-2. skip功能发开分支：8.5.0-skip
+1. 基线分支：8.5.0-base
+2. skip分支：8.5.0-skip
 
 ## 二、功能脚本
 1. 与远程服务器交互的功能shell脚本在./scripts/dev目录下面，阅读[README](README.ascend_remote.md)获得各个shell脚本的功能和使用方式，主要实现代码同步、算子编译、执行测试、拉回日志等功能
@@ -38,7 +38,7 @@ fused_infer_attention_score算子skip(Blocked Attention Sparsity via Softmax Thr
 
 ## 六、Kernel执行时序建模（必须执行）
 
-在对skip功能发开分支进行任何功能修改（包括skip功能）前，必须严格执行以下步骤：
+在对skip分支进行任何功能修改前，必须严格执行以下步骤：
 
 1. 完整阅读基线分支以下核心文件：
     - fia_kernel_nonquant_mla.h
@@ -106,10 +106,18 @@ fused_infer_attention_score算子skip(Blocked Attention Sparsity via Softmax Thr
     - skip 只能通过“条件执行”实现，而不能通过改变计算图结构实现。
 
 ## 七、调试规则
-1. 基于基线分支分支采用ascend_fused_infer_attention_score_decode_cycle.sh脚本运行完整的基线算子的代码同步、算子编译、执行测试、拉回日志，记录基线分支算子时延
-2. 基于skip功能发开分支，添加skip功能，添加printf打印，方便调试，再采用ascend_fused_infer_attention_score_decode_cycle.sh脚本运行代码同步、编译算子、执行测试。这个阶段最难，可能会往复很多次，可能会在编译算子阶段失败，可能会在执行测试阶段失败，注意观察日志修复，使得skip功能正常。
-3. skip功能完全正常时，关掉skip功能发开分支中的所有printf打印，再跑一次完整代码同步、算子编译、执行测试、拉回日志，记录skip功能开发分支算子时延
-4. 如果skip功能开发分支相比基线分支时延降低，则结束，否则继续优化skip功能开发分支
+1. 切到基线分支分支采用ascend_fused_infer_attention_score_decode_cycle.sh脚本运行完整的基线算子的代码同步、算子编译、执行测试、拉回日志，记录基线分支算子时延
+2. 切到skip分支，添加skip功能，添加printf打印，方便调试，再采用ascend_fused_infer_attention_score_decode_cycle.sh脚本运行代码同步、编译算子、执行测试。这个阶段最难，可能会往复很多次，可能会在编译算子阶段失败，可能会在执行测试阶段失败，注意观察日志修复，使得skip功能正常。
+3. skip功能完全正常时，关掉skip分支中的所有printf打印，再跑一次完整代码同步、算子编译、执行测试、拉回日志，记录skip分支算子时延
+4. 如果skip分支相比基线分支时延降低，则结束，否则继续优化skip分支
+5. 确认是跑在8.5.0-skip分支吗。通过打印确认走了新加的skip逻辑吗。调整skip阈值，使得稀疏率为50%。这些都确认后，再关闭打印，再跑完整测试，看时延，比较与基线的收益。
+
+## GOLDEN实现
+1. 切到基线分支，进行完整的编译、测试，获得测试脚本fia_mla_decode.py的输入输出并，记录下来
+2. 参照测试脚本fia_mla_decode.py中torch_npu.npu_fused_infer_attention_score函数执行时走的./attention/common算子源码逻辑，以及第1步获得的输入输出，写一个纯python、torch实现的golden.py脚本，golden.py和torch_npu.npu_fused_infer_attention_score在第1步保存的相同输入下，输出要相同
+3. 继续按照要求切到skip分支实现算子的skip功能
+4. 基于golden.py脚本和算子的skip功能，再写一个golden_skip.py脚本，验证skip功能，即在相同输入下golden_skip.py与在skip分支下执行测试脚本中的torch_npu.npu_fused_infer_attention_score函数时输出要相同
+
 
 ## 八、错误码debug建议
 1. 507046

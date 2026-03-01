@@ -1,0 +1,5 @@
+1. 在测试脚本[fia_mla_decode.py](./attention/common/tests/fia_mla_decode.py)中的固定seed，让输入可复现
+2. 在基线分支基础上，进行完整的编译、测试，获得测试脚本fia_mla_decode.py中的输入输出并记录下来
+3. 参照测试脚本fia_mla_decode.py中torch_npu.npu_fused_infer_attention_score函数执行时走的./attention/common算子源码逻辑，以及第2步获得输入输出，写一个纯python、torch实现的golden.py脚本，golden.py和torch_npu.npu_fused_infer_attention_score在第2步保存的相同输入下，输出相同
+4. 然后继续按照要求实现算子的skip逻辑
+5. 基于golden.py脚本和算子的skip逻辑，再生成一个golden_skip.py，使得在相同输入下golden_skip.py与torch_npu.npu_fused_infer_attention_score家了skip逻辑的算子输出相同
