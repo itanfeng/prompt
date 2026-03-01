@@ -4,13 +4,25 @@ import torch_npu
 import numpy as np
 import time
 import os
+import random
 
 
 def rand_bf16(shape):
     return torch.randn(shape, dtype=torch.bfloat16).npu()
 
 
+def set_global_seed():
+    seed = int(os.getenv("FIA_SEED", "20260301"))
+    random.seed(seed)
+    np.random.seed(seed)
+    torch.manual_seed(seed)
+    if hasattr(torch, "npu") and hasattr(torch.npu, "manual_seed_all"):
+        torch.npu.manual_seed_all(seed)
+    print(f"FIA_SEED={seed}")
+
+
 def test_npu_fused_infer_attention_decode():
+    set_global_seed()
     # ===== shapes =====
     B = int(os.getenv("FIA_B", "5"))
     H = int(os.getenv("FIA_H", "16"))
