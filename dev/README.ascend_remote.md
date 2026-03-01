@@ -10,9 +10,9 @@ cp scripts/dev/ascend_remote.env.example scripts/dev/ascend_remote.env
 
 Defaults already match your current setup:
 - `ASCEND_REMOTE_HOST=ascend-dev`
-- `ASCEND_REMOTE_REPO=/docker/tf/ops-transformer-claude`
-- `ASCEND_REMOTE_CONTAINER=tf-ops`
-- `ASCEND_REMOTE_CONTAINER_REPO=/docker/tf/ops-transformer-claude`
+- `ASCEND_REMOTE_REPO=/docker/tf/ops-transformer`
+- `ASCEND_REMOTE_CONTAINER=tf`
+- `ASCEND_REMOTE_CONTAINER_REPO=/docker/tf/ops-transformer`
 
 Set your build/test commands in `scripts/dev/ascend_remote.env`, or pass them on CLI.
 

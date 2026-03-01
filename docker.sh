@@ -1,5 +1,5 @@
 docker run -it \
-  --name tf-ops \
+  --name tf \
   --network host \
   --ipc=host \
   --privileged \
