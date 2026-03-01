@@ -30,7 +30,7 @@
 ### 1.2 关键脚本
 - 远程交互脚本目录：`./scripts/dev`
   - 阅读 `README.ascend_remote.md` 掌握同步/编译/测试/拉回日志的使用方式
-- 功能测试脚本（PyTorch 接口验证）：`./attention/common/tests/fia_mla_decode.py`
+- 功能测试脚本（PyTorch 接口验证）：`./scripts/dev/fia_mla_decode.py`
   - 通过 `torch_npu.npu_fused_infer_attention_score` 触发算子
 
 ### 1.3 Kernel 相关源码（非量化 MLA 路径）
