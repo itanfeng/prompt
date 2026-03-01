@@ -53,16 +53,16 @@ ensure_remote_repo_dir
 
 rsync_args=(
     -az
-    --exclude=.git/
-    --exclude=.gitcode/
-    --exclude=.codex-remote-logs/
-    --exclude=build/
-    --exclude=build_out/
-    --exclude=output/
-    --exclude=pa-custom-op/
-    --exclude=.pytest_cache/
-    --exclude=.mypy_cache/
-    --exclude=.venv/
+    --exclude=/.git/
+    --exclude=/.gitcode/
+    --exclude=/.codex-remote-logs/
+    --exclude=/build/
+    --exclude=/build_out/
+    --exclude=/output/
+    --exclude=/pa-custom-op/
+    --exclude=/.pytest_cache/
+    --exclude=/.mypy_cache/
+    --exclude=/.venv/
     --exclude=__pycache__/
     --exclude=.DS_Store
 )
